@@ -1,11 +1,21 @@
 require("dotenv").config();
 
+// Validate required environment variables
+if (!process.env.MONGO_URI) {
+  console.error("ERROR: MONGO_URI not set in .env file");
+  process.exit(1);
+}
+if (!process.env.JWT_SECRET) {
+  console.error("ERROR: JWT_SECRET not set in .env file");
+  process.exit(1);
+}
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const connectDB = require("./config/database");
-const authROutes = require("./routes/authRoutes");
+const authRoutes = require("./auth/authRoutes");
 
 const app = express();
 
@@ -19,16 +29,13 @@ app.use(
 
 app.use(express.json());
 
+// Initialize database connection
+connectDB();
+
 const PORT = process.env.PORT || 5000;
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to MongoDB successfully!");
-  })
-  .catch((err) => {
-    console.error("Failed to connect to MongoDB:", err.message);
-  });
+// Use routes
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Kharche backend running");
