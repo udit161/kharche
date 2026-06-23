@@ -81,3 +81,7 @@ exports.getMe = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+exports.logoutUser = (req, res) => {
+  res.status(200).json({ message: "Logged out successfully" });
+};
