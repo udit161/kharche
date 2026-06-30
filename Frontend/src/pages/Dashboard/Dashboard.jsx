@@ -53,15 +53,15 @@ const initialRecentExpenses = [
 ];
 
 const initialPriorityItems = [
-  { id: 1, name: 'Rent Payment', amount: 15000, priority: 'high', due: 'Jul 1', icon: '🏠' },
-  { id: 2, name: 'Insurance Premium', amount: 5000, priority: 'high', due: 'Jul 5', icon: '🛡️' },
+  { id: 1, name: 'Rent Payment', amount: 18000, priority: 'high', due: 'Jul 1', icon: '🏠' },
+  { id: 2, name: 'Insurance Premium', amount: 8000, priority: 'high', due: 'Jul 5', icon: '🛡️' },
   { id: 3, name: 'Gym Membership', amount: 1500, priority: 'medium', due: 'Jul 7', icon: '💪' },
   { id: 4, name: 'Book Subscription', amount: 299, priority: 'low', due: 'Jul 15', icon: '📚' },
   { id: 5, name: 'Phone Recharge', amount: 599, priority: 'medium', due: 'Jul 10', icon: '📱' },
 ];
 
 export default function Dashboard() {
-  const [totalBudget, setTotalBudget] = useState(50000);
+  const [totalBudget, setTotalBudget] = useState(80000);
   const [budgetInput, setBudgetInput] = useState('');
   const [isEditingBudget, setIsEditingBudget] = useState(false);
   const [chartView, setChartView] = useState('weekly');
@@ -81,8 +81,7 @@ export default function Dashboard() {
   // Calculations based on dynamic state
   const totalUsed = expenses.reduce((sum, item) => sum + item.amount, 0);
   const remaining = totalBudget - totalUsed;
-  const expenseLimit = 45000;
-  const usedPercent = Math.min(Math.round((totalUsed / totalBudget) * 100), 100);
+  const expenseLimit = 48000;
   const usedPercent = Math.min(Math.round((totalUsed / totalBudget) * 100), 100) || 0;
   const limitPercent = Math.min(Math.round((totalUsed / expenseLimit) * 100), 100) || 0;
 
@@ -92,7 +91,7 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
         if (!token) return; // Skip if not logged in
         
-        const res = await fetch('http://localhost:5000/api/expenses', {
+        const res = await fetch('http://localhost:8000/api/expenses', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -135,7 +134,7 @@ export default function Dashboard() {
         };
 
         if (token) {
-          const res = await fetch('http://localhost:5000/api/expenses', {
+          const res = await fetch('http://localhost:8000/api/expenses', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -174,7 +173,7 @@ export default function Dashboard() {
         };
 
         if (token) {
-          const res = await fetch('http://localhost:5000/api/expenses', {
+          const res = await fetch('http://localhost:8000/api/expenses', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -227,7 +226,7 @@ export default function Dashboard() {
     datasets: [
       {
         label: 'Expenses',
-        data: [32000, 28000, 35000, 30000, 27000, totalUsed],
+        data: [32000, 28000, 38000, 30000, 27000, totalUsed],
         borderColor: '#FF6B6B',
         backgroundColor: 'rgba(255, 107, 107, 0.1)',
         fill: true,
@@ -240,7 +239,7 @@ export default function Dashboard() {
       },
       {
         label: 'Budget',
-        data: [50000, 50000, 50000, 50000, 50000, totalBudget],
+        data: [80000, 80000, 80000, 80000, 80000, totalBudget],
         borderColor: '#4ECDC4',
         backgroundColor: 'rgba(78, 205, 196, 0.05)',
         fill: true,
@@ -612,7 +611,7 @@ export default function Dashboard() {
                     type="number"
                     value={newPriority.amount}
                     onChange={(e) => setNewPriority({ ...newPriority, amount: e.target.value })}
-                    placeholder="e.g., 15000"
+                    placeholder="e.g., 18000"
                     id="priority-amount-input"
                   />
                 </div>
