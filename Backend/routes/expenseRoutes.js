@@ -3,7 +3,7 @@ const router = express.Router();
 const authMiddleware = require("../middleware/auth");
 const { addExpense, getExpenses } = require("../controllers/expenseController");
 
-router.post("/", authMiddleware, addExpense);
-router.get("/", authMiddleware, getExpenses);
+router.post("/", authMiddleware.protect, addExpense);
+router.get("/", authMiddleware.protect, getExpenses);
 
 module.exports = router;
