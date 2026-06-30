@@ -14,14 +14,12 @@
 /* ===== Budget Bar ===== */
 .budget-bar {
   background: var(--card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-xl);
   padding: 28px 32px 20px;
   box-shadow: var(--shadow-md);
-  border: 2px solid transparent;
-  background-image: linear-gradient(var(--card), var(--card)),
-    linear-gradient(135deg, var(--coral), var(--lavender), var(--teal));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  border: var(--glass-border);
 }
 
 .budget-bar-inner {
@@ -145,6 +143,8 @@
 
 .stat-card {
   background: var(--card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-lg);
   padding: 24px;
   display: flex;
@@ -152,6 +152,7 @@
   gap: 16px;
   box-shadow: var(--shadow-sm);
   border-left: 4px solid transparent;
+  border: var(--glass-border);
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
@@ -162,11 +163,10 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 100px;
-  height: 100px;
-  border-radius: 65% 35% 55% 45%;
-  opacity: 0.06;
-  transform: translate(30%, -30%);
+  width: 40px;
+  height: 40px;
+  opacity: 0.12;
+  transform: translate(10%, -10%);
 }
 
 .stat-card:hover {

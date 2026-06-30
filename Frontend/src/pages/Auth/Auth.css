@@ -6,6 +6,8 @@
   text-align: center;
   position: relative;
   z-index: 10;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .auth-header {

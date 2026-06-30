@@ -1,6 +1,6 @@
-/* ===== Kharche Design System ===== */
+/* ===== Kharche Design System — Pixelated + Glassmorphism ===== */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   /* Primary Palette — Poppy & Vibrant */
@@ -24,11 +24,14 @@
   --mint: #34D399;
   --orange: #FB923C;
 
-  /* Backgrounds */
+  /* Backgrounds — Glassmorphism base */
   --bg: #FFF7F0;
   --bg-secondary: #FFF0E6;
-  --card: #FFFFFF;
-  --card-hover: #FFFBF7;
+  --card: rgba(255, 255, 255, 0.55);
+  --card-solid: #FFFFFF;
+  --card-hover: rgba(255, 251, 247, 0.7);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
 
   /* Text — Dark Slate, NOT black */
   --text: #2D2D3A;
@@ -45,6 +48,8 @@
   --shadow-glow-coral: 0 0 20px rgba(255, 107, 107, 0.3);
   --shadow-glow-teal: 0 0 20px rgba(78, 205, 196, 0.3);
   --shadow-glow-lavender: 0 0 20px rgba(167, 139, 250, 0.3);
+  --pixel-outline: 2px solid var(--text);
+  --pixel-outline-light: 2px solid var(--border-color);
 
   /* Gradients */
   --gradient-coral: linear-gradient(135deg, #FF6B6B, #FF8E8E);
@@ -55,16 +60,17 @@
   --gradient-sidebar: linear-gradient(180deg, #FF6B6B 0%, #A78BFA 50%, #4ECDC4 100%);
   --gradient-hero: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #4ECDC4 50%, #A78BFA 75%, #FF6392 100%);
 
-  /* Typography */
-  --font-heading: 'Outfit', system-ui, sans-serif;
+  /* Typography — Pixel Font for headings */
+  --font-heading: 'Press Start 2P', 'Outfit', system-ui, monospace;
   --font-body: 'Inter', system-ui, sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
 
-  /* Spacing (Abstract, organic shapes) */
-  --radius-sm: 14px 6px 12px 4px;
-  --radius-md: 22px 10px 18px 8px;
-  --radius-lg: 36px 16px 30px 20px;
-  --radius-xl: 50px 20px 40px 28px;
-  --radius-full: 24px 8px 32px 10px;
+  /* Spacing — Sharp, pixelated corners */
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-full: 4px;
 
 
   /* Transitions */
@@ -101,11 +107,14 @@
   --mint: #C5A880;
   --orange: #AA7C11;
 
-  /* Backgrounds */
-  --bg: #0D0D0D; /* Pitch Black */
-  --bg-secondary: #141414; /* Off-black */
-  --card: #1A1A1A; /* Dark Charcoal */
-  --card-hover: #222222;
+  /* Backgrounds — Dark Glassmorphism */
+  --bg: #0D0D0D;
+  --bg-secondary: #141414;
+  --card: rgba(26, 26, 26, 0.6);
+  --card-solid: #1A1A1A;
+  --card-hover: rgba(34, 34, 34, 0.7);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(212, 175, 55, 0.15);
 
   /* Text */
   --text: #F5F5DC; /* Beige */
@@ -114,8 +123,10 @@
   --text-on-color: #0D0D0D; /* Black text on Gold background */
 
   /* Borders & Shadows */
-  --border: #2C261F; /* Dark Gold/Brown border */
+  --border: #2C261F;
   --border-color: #3D352B;
+  --pixel-outline: 2px solid var(--coral);
+  --pixel-outline-light: 2px solid var(--border-color);
   --shadow-sm: 0 2px 8px rgba(212, 175, 55, 0.08);
   --shadow-md: 0 4px 16px rgba(212, 175, 55, 0.15);
   --shadow-lg: 0 8px 32px rgba(212, 175, 55, 0.25);
@@ -247,13 +258,15 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
 }
 
-/* ===== Utility Classes ===== */
+/* ===== Utility Classes — Glassmorphism Cards ===== */
 .card {
   background: var(--card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
+  border: var(--glass-border);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 .card:hover {
@@ -304,16 +317,18 @@ input:focus, select:focus, textarea:focus {
 .badge-medium { background: rgba(255, 217, 61, 0.2); color: #B8860B; }
 .badge-low { background: rgba(78, 205, 196, 0.15); color: var(--teal-deep); }
 
-/* ===== Scrollbar ===== */
+/* ===== Scrollbar — Pixel Style ===== */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-secondary);
+  border-left: 2px solid var(--border);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--lavender-light);
-  border-radius: var(--radius-full);
+  border-radius: 0;
+  border: 1px solid var(--border-color);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--lavender);
@@ -345,6 +360,11 @@ input:focus, select:focus, textarea:focus {
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 5px rgba(255, 107, 107, 0.3); }
   50% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
+}
+
+@keyframes pixel-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 @keyframes shimmer {

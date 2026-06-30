@@ -4,8 +4,10 @@
   justify-content: space-between;
   padding: 16px 32px;
   background: var(--card);
-  border-bottom: 1px solid var(--border);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 2px solid var(--border);
+  border-radius: 0;
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
@@ -100,7 +102,7 @@
   color: white;
   font-size: 0.65rem;
   font-weight: 700;
-  border-radius: 40% 60% 45% 55%;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +142,7 @@
 .avatar-circle {
   width: 42px;
   height: 42px;
-  border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+  border-radius: 4px;
   background: var(--gradient-lavender);
   display: flex;
   align-items: center;
@@ -150,6 +152,7 @@
   font-size: 1rem;
   box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
   transition: transform var(--transition-fast);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .avatar-circle:hover {
