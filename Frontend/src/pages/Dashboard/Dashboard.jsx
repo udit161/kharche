@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Wallet,
   TrendingDown,
@@ -83,7 +83,35 @@ export default function Dashboard() {
   const remaining = totalBudget - totalUsed;
   const expenseLimit = 45000;
   const usedPercent = Math.min(Math.round((totalUsed / totalBudget) * 100), 100);
-  const limitPercent = Math.min(Math.round((totalUsed / expenseLimit) * 100), 100);
+  const usedPercent = Math.min(Math.round((totalUsed / totalBudget) * 100), 100) || 0;
+  const limitPercent = Math.min(Math.round((totalUsed / expenseLimit) * 100), 100) || 0;
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return; // Skip if not logged in
+        
+        const res = await fetch('http://localhost:5000/api/expenses', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const priorityItems = data.filter(e => e.priority !== 'none');
+          const recentItems = data.filter(e => e.priority === 'none');
+          if (data.length > 0) {
+            setPriorities(priorityItems);
+            setExpenses(recentItems);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
+      }
+    };
+    fetchExpenses();
+  }, []);
 
   const handleBudgetSubmit = () => {
     const val = parseFloat(budgetInput);
@@ -94,37 +122,78 @@ export default function Dashboard() {
     }
   };
 
-  const handleAddPriority = () => {
+  const handleAddPriority = async () => {
     if (newPriority.name && newPriority.amount) {
-      setPriorities([
-        {
-          id: Date.now(),
+      try {
+        const token = localStorage.getItem('token');
+        const expenseData = {
           name: newPriority.name,
           amount: parseFloat(newPriority.amount),
           priority: newPriority.priority,
           due: newPriority.due || 'Soon',
           icon: newPriority.icon,
-        },
-        ...priorities,
-      ]);
+        };
+
+        if (token) {
+          const res = await fetch('http://localhost:5000/api/expenses', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(expenseData)
+          });
+          if (res.ok) {
+            const savedExpense = await res.json();
+            setPriorities([savedExpense, ...priorities]);
+          } else {
+            setPriorities([{ id: Date.now(), ...expenseData }, ...priorities]);
+          }
+        } else {
+          setPriorities([{ id: Date.now(), ...expenseData }, ...priorities]);
+        }
+      } catch (error) {
+        console.error('Error saving priority expense:', error);
+      }
       setNewPriority({ name: '', amount: '', priority: 'high', due: '', icon: '🔥' });
       setShowAddPriorityModal(false);
     }
   };
 
-  const handleAddRecent = () => {
+  const handleAddRecent = async () => {
     if (newRecent.name && newRecent.amount) {
-      setExpenses([
-        {
-          id: Date.now(),
+      try {
+        const token = localStorage.getItem('token');
+        const expenseData = {
           name: newRecent.name,
           amount: parseFloat(newRecent.amount),
           category: newRecent.category,
           date: newRecent.date || 'Today',
           icon: newRecent.icon,
-        },
-        ...expenses,
-      ]);
+          priority: 'none'
+        };
+
+        if (token) {
+          const res = await fetch('http://localhost:5000/api/expenses', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(expenseData)
+          });
+          if (res.ok) {
+            const savedExpense = await res.json();
+            setExpenses([savedExpense, ...expenses]);
+          } else {
+            setExpenses([{ id: Date.now(), ...expenseData }, ...expenses]);
+          }
+        } else {
+          setExpenses([{ id: Date.now(), ...expenseData }, ...expenses]);
+        }
+      } catch (error) {
+        console.error('Error saving recent expense:', error);
+      }
       setNewRecent({ name: '', amount: '', category: 'Food', date: 'Today', icon: '💸' });
       setShowAddRecentModal(false);
     }
