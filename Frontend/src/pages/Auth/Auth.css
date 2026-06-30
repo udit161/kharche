@@ -1,0 +1,122 @@
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.auth-header {
+  margin-bottom: 30px;
+}
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-coral);
+  color: #fff;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-glow-coral);
+}
+
+.auth-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.auth-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  padding-left: 4px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.auth-input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+  outline: none;
+}
+
+[data-theme="dark"] .auth-input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.auth-button {
+  margin-top: 10px;
+  padding: 14px;
+  font-size: 1.05rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.auth-footer a {
+  font-weight: 600;
+  color: var(--coral-deep);
+  margin-left: 6px;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.auth-error {
+  color: var(--coral-deep);
+  background: rgba(255, 107, 107, 0.1);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  text-align: center;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+[data-theme="dark"] .auth-error {
+  color: var(--coral-light);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.2);
+}
