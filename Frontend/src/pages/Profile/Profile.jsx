@@ -1,16 +1,54 @@
-import { useState } from 'react';
-import { Camera, Edit3, Save } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Camera, Edit3, Save, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import TopBar from '../../components/TopBar/TopBar';
 import './Profile.css';
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('Udit Kumar');
+  const [email, setEmail] = useState('');
   const [tempName, setTempName] = useState('Udit Kumar');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+        
+        const res = await fetch('/api/auth/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setName(data.name);
+          setTempName(data.name);
+          setEmail(data.email);
+        } else {
+          localStorage.removeItem('token');
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   const handleSave = () => {
     setName(tempName);
     setIsEditing(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
@@ -62,6 +100,17 @@ export default function Profile() {
                     </button>
                   </div>
                 )}
+              </div>
+
+              <div className="profile-email-section">
+                <p className="profile-email">{email || 'Loading...'}</p>
+              </div>
+
+              <div className="profile-actions-section">
+                <button className="logout-btn" onClick={handleLogout} id="logout-btn">
+                  <LogOut size={18} />
+                  <span>Logout</span>
+                </button>
               </div>
             </div>
           </div>

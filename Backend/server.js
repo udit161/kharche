@@ -41,8 +41,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/incomes", incomeRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Kharche backend running");
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../Frontend/dist/index.html"));
 });
 
 app.listen(PORT, () => {

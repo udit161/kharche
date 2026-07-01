@@ -91,7 +91,7 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
         if (!token) return; // Skip if not logged in
         
-        const res = await fetch('http://localhost:8000/api/expenses', {
+        const res = await fetch('/api/expenses', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -134,7 +134,7 @@ export default function Dashboard() {
         };
 
         if (token) {
-          const res = await fetch('http://localhost:8000/api/expenses', {
+          const res = await fetch('/api/expenses', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ export default function Dashboard() {
         };
 
         if (token) {
-          const res = await fetch('http://localhost:8000/api/expenses', {
+          const res = await fetch('/api/expenses', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

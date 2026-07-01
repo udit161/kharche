@@ -193,6 +193,48 @@
   transform: translateY(-1px);
 }
 
+/* Profile Email & Logout Styles */
+.profile-email-section {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.profile-email {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.profile-actions-section {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--coral-deep);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: var(--coral);
+  color: #fff;
+  border-color: var(--coral);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-coral);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .profile-content {
