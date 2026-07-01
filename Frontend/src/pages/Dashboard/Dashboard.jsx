@@ -46,7 +46,7 @@ ChartJS.register(
 // Removed initial dummy data arrays
 
 export default function Dashboard() {
-  const [totalBudget, setTotalBudget] = useState(80000);
+  const [totalBudget, setTotalBudget] = useState(0);
   const [budgetInput, setBudgetInput] = useState('');
   const [isEditingBudget, setIsEditingBudget] = useState(false);
   const [chartView, setChartView] = useState('weekly');
@@ -66,9 +66,9 @@ export default function Dashboard() {
   // Calculations based on dynamic state
   const totalUsed = expenses.reduce((sum, item) => sum + item.amount, 0);
   const remaining = totalBudget - totalUsed;
-  const expenseLimit = 48000;
-  const usedPercent = Math.min(Math.round((totalUsed / totalBudget) * 100), 100) || 0;
-  const limitPercent = Math.min(Math.round((totalUsed / expenseLimit) * 100), 100) || 0;
+  const expenseLimit = totalBudget > 0 ? Math.round(totalBudget * 0.8) : 0;
+  const usedPercent = totalBudget > 0 ? Math.min(Math.round((totalUsed / totalBudget) * 100), 100) : 0;
+  const limitPercent = expenseLimit > 0 ? Math.min(Math.round((totalUsed / expenseLimit) * 100), 100) : 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -245,7 +245,7 @@ export default function Dashboard() {
       },
       {
         label: 'Budget',
-        data: [80000, 80000, 80000, 80000, 80000, totalBudget],
+        data: [totalBudget, totalBudget, totalBudget, totalBudget, totalBudget, totalBudget],
         borderColor: '#4ECDC4',
         backgroundColor: 'rgba(78, 205, 196, 0.05)',
         fill: true,

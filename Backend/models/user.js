@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   totalBudget: {
     type: Number,
-    default: 80000,
+    default: 0,
   },
 });
 
