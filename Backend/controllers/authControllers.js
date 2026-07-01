@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const { OAuth2Client } = require("google-auth-library");
+
+const googleClient = new OAuth2Client(process.env.ClientID);
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
@@ -80,6 +84,56 @@ exports.getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
+};
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({ message: "Google token is required" });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken,
+      audience: process.env.ClientID,
+    });
+
+    const payload = ticket.getPayload();
+    const email = payload?.email;
+    const name = payload?.name || payload?.given_name || "Google User";
+
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: "Google account email not available" });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        password: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      });
+    }
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Google authentication failed", error: error.message });
+  }
+};
+
+exports.googleClientId = (req, res) => {
+  res.status(200).json({ clientId: process.env.ClientID });
 };
 
 exports.logoutUser = (req, res) => {

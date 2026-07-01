@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Wallet, ArrowRight, UserPlus } from 'lucide-react';
-import './Auth.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Wallet, ArrowRight, UserPlus } from "lucide-react";
+import GoogleAuthButton from "../../components/GoogleAuthButton";
+import "./Auth.css";
 
 export default function Signup() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,27 +16,27 @@ export default function Signup() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    
+
     try {
-      const res = await fetch('http://localhost:8000/api/auth/register', {
-        method: 'POST',
+      const res = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password }),
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
         // Optionally save user data if needed
-        navigate('/');
+        navigate("/");
       } else {
-        setError(data.message || 'Signup failed. Please try again.');
+        setError(data.message || "Signup failed. Please try again.");
       }
     } catch (err) {
-      setError('Server error. Please try again later.');
+      setError("Server error. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -94,8 +95,14 @@ export default function Signup() {
           />
         </div>
 
-        <button type="submit" className="btn-primary auth-button" disabled={loading}>
-          {loading ? 'Creating account...' : (
+        <button
+          type="submit"
+          className="btn-primary auth-button"
+          disabled={loading}
+        >
+          {loading ? (
+            "Creating account..."
+          ) : (
             <>
               Sign Up <UserPlus size={18} />
             </>
@@ -103,8 +110,20 @@ export default function Signup() {
         </button>
       </form>
 
+      <div className="auth-divider">
+        <span>or</span>
+      </div>
+      <GoogleAuthButton />
+
       <div className="auth-footer">
-        Already have an account? <Link to="/login">Log in <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /></Link>
+        Already have an account?{" "}
+        <Link to="/login">
+          Log in{" "}
+          <ArrowRight
+            size={14}
+            style={{ display: "inline", verticalAlign: "middle" }}
+          />
+        </Link>
       </div>
     </div>
   );

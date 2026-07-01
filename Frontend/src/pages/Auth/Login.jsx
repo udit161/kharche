@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Wallet, ArrowRight, LogIn } from 'lucide-react';
-import './Auth.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Wallet, ArrowRight, LogIn } from "lucide-react";
+import GoogleAuthButton from "../../components/GoogleAuthButton";
+import "./Auth.css";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,28 +15,30 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    
+
     try {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
-        method: 'POST',
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
         // Optionally save user data if needed
         // localStorage.setItem('user', JSON.stringify(data));
-        navigate('/');
+        navigate("/");
       } else {
-        setError(data.message || 'Login failed. Please check your credentials.');
+        setError(
+          data.message || "Login failed. Please check your credentials.",
+        );
       }
     } catch (err) {
-      setError('Server error. Please try again later.');
+      setError("Server error. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -81,8 +84,14 @@ export default function Login() {
           />
         </div>
 
-        <button type="submit" className="btn-primary auth-button" disabled={loading}>
-          {loading ? 'Logging in...' : (
+        <button
+          type="submit"
+          className="btn-primary auth-button"
+          disabled={loading}
+        >
+          {loading ? (
+            "Logging in..."
+          ) : (
             <>
               Login <LogIn size={18} />
             </>
@@ -90,8 +99,20 @@ export default function Login() {
         </button>
       </form>
 
+      <div className="auth-divider">
+        <span>or</span>
+      </div>
+      <GoogleAuthButton />
+
       <div className="auth-footer">
-        Don't have an account? <Link to="/signup">Sign up <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /></Link>
+        Don't have an account?{" "}
+        <Link to="/signup">
+          Sign up{" "}
+          <ArrowRight
+            size={14}
+            style={{ display: "inline", verticalAlign: "middle" }}
+          />
+        </Link>
       </div>
     </div>
   );
