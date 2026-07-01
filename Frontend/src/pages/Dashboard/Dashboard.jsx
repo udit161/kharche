@@ -43,22 +43,7 @@ ChartJS.register(
   ArcElement
 );
 
-// Initial sample data
-const initialRecentExpenses = [
-  { id: 1, name: 'Grocery Shopping', amount: 2500, category: 'Food', date: 'Today', icon: '🛒' },
-  { id: 2, name: 'Uber Ride', amount: 350, category: 'Transport', date: 'Today', icon: '🚗' },
-  { id: 3, name: 'Netflix', amount: 649, category: 'Entertainment', date: 'Yesterday', icon: '🎬' },
-  { id: 4, name: 'Coffee', amount: 180, category: 'Food', date: 'Yesterday', icon: '☕' },
-  { id: 5, name: 'Electricity Bill', amount: 1200, category: 'Bills', date: '2 days ago', icon: '⚡' },
-];
-
-const initialPriorityItems = [
-  { id: 1, name: 'Rent Payment', amount: 18000, priority: 'high', due: 'Jul 1', icon: '🏠' },
-  { id: 2, name: 'Insurance Premium', amount: 8000, priority: 'high', due: 'Jul 5', icon: '🛡️' },
-  { id: 3, name: 'Gym Membership', amount: 1500, priority: 'medium', due: 'Jul 7', icon: '💪' },
-  { id: 4, name: 'Book Subscription', amount: 299, priority: 'low', due: 'Jul 15', icon: '📚' },
-  { id: 5, name: 'Phone Recharge', amount: 599, priority: 'medium', due: 'Jul 10', icon: '📱' },
-];
+// Removed initial dummy data arrays
 
 export default function Dashboard() {
   const [totalBudget, setTotalBudget] = useState(80000);
@@ -67,8 +52,8 @@ export default function Dashboard() {
   const [chartView, setChartView] = useState('weekly');
 
   // Lists state
-  const [expenses, setExpenses] = useState(initialRecentExpenses);
-  const [priorities, setPriorities] = useState(initialPriorityItems);
+  const [expenses, setExpenses] = useState([]);
+  const [priorities, setPriorities] = useState([]);
 
   // Modal states
   const [showAddPriorityModal, setShowAddPriorityModal] = useState(false);
@@ -86,38 +71,59 @@ export default function Dashboard() {
   const limitPercent = Math.min(Math.round((totalUsed / expenseLimit) * 100), 100) || 0;
 
   useEffect(() => {
-    const fetchExpenses = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) return; // Skip if not logged in
+        if (!token) return;
         
-        const res = await fetch('/api/expenses', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        // Fetch budget
+        const userRes = await fetch('/api/auth/me', {
+          headers: { Authorization: `Bearer ${token}` }
         });
-        if (res.ok) {
-          const data = await res.json();
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          if (userData.totalBudget) setTotalBudget(userData.totalBudget);
+        }
+
+        // Fetch expenses
+        const expRes = await fetch('/api/expenses', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (expRes.ok) {
+          const data = await expRes.json();
           const priorityItems = data.filter(e => e.priority !== 'none');
           const recentItems = data.filter(e => e.priority === 'none');
-          if (data.length > 0) {
-            setPriorities(priorityItems);
-            setExpenses(recentItems);
-          }
+          setPriorities(priorityItems);
+          setExpenses(recentItems);
         }
       } catch (error) {
-        console.error('Error fetching expenses:', error);
+        console.error('Error fetching data:', error);
       }
     };
-    fetchExpenses();
+    fetchData();
   }, []);
 
-  const handleBudgetSubmit = () => {
+  const handleBudgetSubmit = async () => {
     const val = parseFloat(budgetInput);
     if (val > 0) {
       setTotalBudget(val);
       setBudgetInput('');
       setIsEditingBudget(false);
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          await fetch('/api/auth/budget', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ totalBudget: val })
+          });
+        }
+      } catch (err) {
+        console.error('Failed to update budget', err);
+      }
     }
   };
 
@@ -304,17 +310,22 @@ export default function Dashboard() {
   };
 
   // Donut chart data for expense breakdown
+  const categoryTotals = expenses.reduce((acc, item) => {
+    const cat = item.category || 'Other';
+    acc[cat] = (acc[cat] || 0) + item.amount;
+    return acc;
+  }, {});
+  
+  const donutLabels = Object.keys(categoryTotals).length > 0 ? Object.keys(categoryTotals) : ['No Data'];
+  const donutDataValues = donutLabels.length > 0 && donutLabels[0] !== 'No Data' ? Object.values(categoryTotals) : [1];
+
   const donutData = {
-    labels: ['Food', 'Transport', 'Bills', 'Entertainment', 'Shopping'],
+    labels: donutLabels,
     datasets: [
       {
-        data: [8500, 4200, 6800, 3500, 5500],
+        data: donutDataValues,
         backgroundColor: [
-          '#FF6B6B',
-          '#4ECDC4',
-          '#A78BFA',
-          '#FFD93D',
-          '#FF6392',
+          '#FF6B6B', '#4ECDC4', '#A78BFA', '#FFD93D', '#FF6392', '#38BDF8', '#F472B6', '#34D399'
         ],
         borderWidth: 0,
         spacing: 3,

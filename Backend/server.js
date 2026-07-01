@@ -18,6 +18,7 @@ const connectDB = require("./config/database");
 const authRoutes = require("./auth/authRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
 
 const app = express();
 
@@ -40,6 +41,7 @@ const PORT = process.env.PORT || 5000;
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/incomes", incomeRoutes);
+app.use("/api/subscriptions", subscriptionRoutes);
 
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, "../Frontend/dist")));
