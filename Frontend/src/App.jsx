@@ -5,6 +5,7 @@ import Profile from './pages/Profile/Profile';
 import Subscriptions from './pages/Subscriptions/Subscriptions';
 import Login from './pages/Auth/Login';
 import Signup from './pages/Auth/Signup';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 export default function App() {
@@ -16,9 +17,9 @@ export default function App() {
       {!isAuthPage && <Sidebar />}
       <main className={`app-main ${isAuthPage ? 'no-sidebar' : ''}`} id="app-main">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/subscriptions" element={<Subscriptions />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/subscriptions" element={<ProtectedRoute><Subscriptions /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<Navigate to="/" replace />} />
