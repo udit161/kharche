@@ -61,7 +61,8 @@ export default function Dashboard() {
 
   // New item states
   const [newPriority, setNewPriority] = useState({ name: '', amount: '', priority: 'high', due: '', icon: '🔥' });
-  const [newRecent, setNewRecent] = useState({ name: '', amount: '', category: 'Food', date: 'Today', icon: '💸' });
+  const todayStr = new Date().toISOString().split('T')[0];
+  const [newRecent, setNewRecent] = useState({ name: '', amount: '', category: 'Food', date: todayStr, icon: '💸' });
 
   // Calculations based on dynamic state
   const totalUsed = expenses.reduce((sum, item) => sum + item.amount, 0);
@@ -173,7 +174,7 @@ export default function Dashboard() {
           name: newRecent.name,
           amount: parseFloat(newRecent.amount),
           category: newRecent.category,
-          date: newRecent.date || 'Today',
+          date: newRecent.date || todayStr,
           icon: newRecent.icon,
           priority: 'none'
         };
@@ -199,10 +200,36 @@ export default function Dashboard() {
       } catch (error) {
         console.error('Error saving recent expense:', error);
       }
-      setNewRecent({ name: '', amount: '', category: 'Food', date: 'Today', icon: '💸' });
+      setNewRecent({ name: '', amount: '', category: 'Food', date: todayStr, icon: '💸' });
       setShowAddRecentModal(false);
     }
   };
+
+  // Calculate dynamic data for charts based on expenses
+  const weeklyTotals = [0, 0, 0, 0, 0, 0, 0]; // Mon (0) to Sun (6)
+  const monthlyTotals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // Jan to Dec
+  const currentYear = new Date().getFullYear();
+
+  expenses.forEach(item => {
+    let expDate = new Date();
+    if (item.date && item.date.toLowerCase() !== 'today') {
+      if (item.date.toLowerCase() === 'yesterday') {
+        expDate.setDate(expDate.getDate() - 1);
+      } else {
+        const parsed = new Date(item.date);
+        if (!isNaN(parsed)) expDate = parsed;
+      }
+    }
+
+    if (expDate.getFullYear() === currentYear) {
+      monthlyTotals[expDate.getMonth()] += item.amount;
+    }
+    
+    // Day of week: 0 (Sun) to 6 (Sat) -> convert to 0 (Mon) to 6 (Sun)
+    let dayOfWeek = expDate.getDay() - 1;
+    if (dayOfWeek === -1) dayOfWeek = 6;
+    weeklyTotals[dayOfWeek] += item.amount;
+  });
 
   // Weekly chart data
   const weeklyData = {
@@ -210,7 +237,7 @@ export default function Dashboard() {
     datasets: [
       {
         label: 'Spent',
-        data: [1200, 1900, 800, 2400, 1600, 3200, 900],
+        data: weeklyTotals,
         backgroundColor: [
           'rgba(255, 107, 107, 0.8)',
           'rgba(167, 139, 250, 0.8)',
@@ -226,13 +253,19 @@ export default function Dashboard() {
     ],
   };
 
+  const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const currentMonthIdx = new Date().getMonth();
+  
+  // Create an array of budget values across months for display
+  const budgetDataLine = new Array(12).fill(totalBudget);
+
   // Monthly chart data
   const monthlyData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Expenses',
-        data: [32000, 28000, 38000, 30000, 27000, totalUsed],
+        data: monthlyTotals,
         borderColor: '#FF6B6B',
         backgroundColor: 'rgba(255, 107, 107, 0.1)',
         fill: true,
@@ -245,7 +278,7 @@ export default function Dashboard() {
       },
       {
         label: 'Budget',
-        data: [totalBudget, totalBudget, totalBudget, totalBudget, totalBudget, totalBudget],
+        data: budgetDataLine,
         borderColor: '#4ECDC4',
         backgroundColor: 'rgba(78, 205, 196, 0.05)',
         fill: true,
@@ -724,10 +757,9 @@ export default function Dashboard() {
               <div className="form-group">
                 <label>Date</label>
                 <input
-                  type="text"
+                  type="date"
                   value={newRecent.date}
                   onChange={(e) => setNewRecent({ ...newRecent, date: e.target.value })}
-                  placeholder="e.g., Today"
                   id="recent-date-input"
                 />
               </div>
