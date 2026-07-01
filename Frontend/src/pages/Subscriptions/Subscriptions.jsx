@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Plus,
   Calendar,
@@ -12,93 +12,29 @@ import {
 import TopBar from '../../components/TopBar/TopBar';
 import './Subscriptions.css';
 
-const initialSubscriptions = [
-  {
-    id: 1,
-    name: 'Spotify',
-    price: 119,
-    cycle: 'monthly',
-    nextBill: 'Jul 15',
-    color: '#1DB954',
-    emoji: '🎵',
-    category: 'Music',
-  },
-  {
-    id: 2,
-    name: 'Netflix',
-    price: 649,
-    cycle: 'monthly',
-    nextBill: 'Jul 8',
-    color: '#E50914',
-    emoji: '🎬',
-    category: 'Streaming',
-  },
-  {
-    id: 3,
-    name: 'YouTube Premium',
-    price: 129,
-    cycle: 'monthly',
-    nextBill: 'Jul 20',
-    color: '#FF0000',
-    emoji: '▶️',
-    category: 'Streaming',
-  },
-  {
-    id: 4,
-    name: 'Amazon Prime',
-    price: 1499,
-    cycle: 'yearly',
-    nextBill: 'Dec 1',
-    color: '#FF9900',
-    emoji: '📦',
-    category: 'Shopping',
-  },
-  {
-    id: 5,
-    name: 'iCloud+',
-    price: 75,
-    cycle: 'monthly',
-    nextBill: 'Jul 3',
-    color: '#007AFF',
-    emoji: '☁️',
-    category: 'Storage',
-  },
-  {
-    id: 6,
-    name: 'Notion',
-    price: 96,
-    cycle: 'monthly',
-    nextBill: 'Jul 12',
-    color: '#2D2D2D',
-    emoji: '📝',
-    category: 'Productivity',
-  },
-  {
-    id: 7,
-    name: 'Disney+ Hotstar',
-    price: 299,
-    cycle: 'monthly',
-    nextBill: 'Jul 25',
-    color: '#113CCF',
-    emoji: '✨',
-    category: 'Streaming',
-  },
-  {
-    id: 8,
-    name: 'ChatGPT Plus',
-    price: 1680,
-    cycle: 'monthly',
-    nextBill: 'Jul 5',
-    color: '#10A37F',
-    emoji: '🤖',
-    category: 'AI',
-  },
-];
-
 export default function Subscriptions() {
-  const [subscriptions, setSubscriptions] = useState(initialSubscriptions);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newSub, setNewSub] = useState({ name: '', price: '', cycle: 'monthly', emoji: '📱' });
+
+  useEffect(() => {
+    const fetchSubs = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch('/api/subscriptions', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSubscriptions(data.map(sub => ({ ...sub, id: sub._id })));
+        }
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+      }
+    };
+    fetchSubs();
+  }, []);
 
   const monthlyCost = subscriptions.reduce((sum, sub) => {
     return sum + (sub.cycle === 'yearly' ? Math.round(sub.price / 12) : sub.price);
@@ -108,26 +44,60 @@ export default function Subscriptions() {
     return sum + (sub.cycle === 'yearly' ? sub.price : sub.price * 12);
   }, 0);
 
-  const handleDelete = (id) => {
-    setSubscriptions(subscriptions.filter((s) => s.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        await fetch(`/api/subscriptions/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+      setSubscriptions(subscriptions.filter((s) => s.id !== id));
+    } catch (error) {
+      console.error('Error deleting subscription:', error);
+    }
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (newSub.name && newSub.price) {
       const colors = ['#FF6B6B', '#4ECDC4', '#A78BFA', '#FFD93D', '#FF6392', '#38BDF8'];
-      setSubscriptions([
-        ...subscriptions,
-        {
-          id: Date.now(),
-          name: newSub.name,
-          price: parseFloat(newSub.price),
-          cycle: newSub.cycle,
-          nextBill: 'N/A',
-          color: colors[Math.floor(Math.random() * colors.length)],
-          emoji: newSub.emoji,
-          category: 'Custom',
-        },
-      ]);
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      
+      const subData = {
+        name: newSub.name,
+        price: parseFloat(newSub.price),
+        cycle: newSub.cycle,
+        nextBill: 'N/A',
+        color: randomColor,
+        emoji: newSub.emoji,
+        category: 'Custom',
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const res = await fetch('/api/subscriptions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(subData)
+          });
+          if (res.ok) {
+            const savedSub = await res.json();
+            savedSub.id = savedSub._id;
+            setSubscriptions([...subscriptions, savedSub]);
+          } else {
+             setSubscriptions([...subscriptions, { ...subData, id: Date.now() }]);
+          }
+        } else {
+          setSubscriptions([...subscriptions, { ...subData, id: Date.now() }]);
+        }
+      } catch (error) {
+         console.error('Error saving subscription:', error);
+      }
       setNewSub({ name: '', price: '', cycle: 'monthly', emoji: '📱' });
       setShowAddModal(false);
     }
