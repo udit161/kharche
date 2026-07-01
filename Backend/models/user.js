@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  totalBudget: {
+    type: Number,
+    default: 80000,
+  },
 });
 
 UserSchema.pre("save", async function () {
