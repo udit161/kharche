@@ -25,16 +25,13 @@
 }
 
 .logo-icon {
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius-md);
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .logo-text {

@@ -4,7 +4,6 @@ import {
   User,
   CreditCard,
   TrendingUp,
-  Sparkles,
   LogOut,
 } from 'lucide-react';
 import './Sidebar.css';
@@ -20,10 +19,41 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar" id="sidebar">
-      {/* Logo */}
       <div className="sidebar-logo">
         <div className="logo-icon">
-          <Sparkles size={24} />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+            <defs>
+              <linearGradient id="sb-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#7c3aed"/>
+                <stop offset="100%" stopColor="#4f46e5"/>
+              </linearGradient>
+              <linearGradient id="sb-coin-a" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffd700"/>
+                <stop offset="100%" stopColor="#c47a00"/>
+              </linearGradient>
+              <linearGradient id="sb-coin-b" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffe44d"/>
+                <stop offset="100%" stopColor="#b06800"/>
+              </linearGradient>
+            </defs>
+            {/* Background */}
+            <rect width="32" height="32" rx="7" fill="url(#sb-bg)"/>
+            {/* Bottom coin */}
+            <ellipse cx="21" cy="24" rx="6.5" ry="2.5" fill="url(#sb-coin-a)"/>
+            <rect x="14.5" y="20.5" width="13" height="3.5" fill="url(#sb-coin-a)"/>
+            <ellipse cx="21" cy="20.5" rx="6.5" ry="2.5" fill="#ffc300"/>
+            {/* Middle coin */}
+            <ellipse cx="21" cy="18.5" rx="6.5" ry="2.5" fill="url(#sb-coin-b)"/>
+            <rect x="14.5" y="15" width="13" height="3.5" fill="url(#sb-coin-b)"/>
+            <ellipse cx="21" cy="15" rx="6.5" ry="2.5" fill="#ffe44d"/>
+            {/* Top coin */}
+            <ellipse cx="21" cy="13" rx="6.5" ry="2.5" fill="#ffd700"/>
+            <rect x="14.5" y="9.5" width="13" height="3.5" fill="#ffd700"/>
+            <ellipse cx="21" cy="9.5" rx="6.5" ry="2.5" fill="#ffe566"/>
+            <ellipse cx="21" cy="9.5" rx="4.5" ry="1.5" fill="#fff8cc" opacity="0.5"/>
+            {/* Letter K */}
+            <text x="5" y="23" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="19" fill="white">K</text>
+          </svg>
         </div>
         <span className="logo-text">Kharche</span>
       </div>
