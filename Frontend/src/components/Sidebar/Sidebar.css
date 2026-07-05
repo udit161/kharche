@@ -148,7 +148,7 @@
   transform: translateY(-1px);
 }
 
-/* Responsive */
+/* Responsive — Bottom Nav for Mobile */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -159,33 +159,88 @@
     left: 0;
     right: 0;
     flex-direction: row;
-    padding: 8px 16px;
+    align-items: center;
+    padding: 6px 8px;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
     border-radius: 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.15);
+    border-right: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 200;
   }
 
-  .sidebar-logo,
-  .sidebar-footer {
+  .sidebar-logo {
     display: none;
   }
 
+  /* Show footer as a logout icon button */
+  .sidebar-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .sidebar-stats {
+    display: none;
+  }
+
+  .logout-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 10px;
+    font-size: 0.65rem;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: none;
+    backdrop-filter: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+  }
+
+  .logout-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: none;
+  }
+
+  .logout-btn span {
+    display: block;
+    font-size: 0.6rem;
+  }
+
   .sidebar-nav {
-    width: 100%;
+    flex: 1;
   }
 
   .nav-list {
     flex-direction: row;
     justify-content: space-around;
+    gap: 0;
   }
 
   .nav-link {
     flex-direction: column;
-    gap: 4px;
-    padding: 8px 12px;
-    font-size: 0.75rem;
+    gap: 3px;
+    padding: 6px 8px;
+    font-size: 0.6rem;
+    border-radius: var(--radius-sm);
+    min-width: 52px;
+    align-items: center;
+    justify-content: center;
   }
 
   .nav-link:hover {
     transform: translateY(-2px);
+  }
+
+  .nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .nav-active-dot {
@@ -193,7 +248,35 @@
   }
 
   .nav-icon-wrap {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+  }
+
+  .nav-link.active .nav-icon-wrap {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .nav-label {
+    flex: none;
+    text-align: center;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 360px) {
+  .sidebar {
+    padding: 4px 4px;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .nav-link {
+    padding: 6px 4px;
+    min-width: 44px;
+  }
+
+  .logout-btn {
+    min-width: 44px;
+    padding: 6px 4px;
   }
 }

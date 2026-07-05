@@ -386,3 +386,31 @@ input:focus, select:focus, textarea:focus {
 .animate-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
 .animate-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
 .animate-in-delay-5 { animation-delay: 0.5s; opacity: 0; }
+
+/* ===== Global Mobile Overrides ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 0.9rem; }
+  h2 { font-size: 0.8rem; }
+  h3 { font-size: 0.72rem; }
+  h4 { font-size: 0.65rem; }
+
+  .card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 15px;
+  }
+
+  h1 { font-size: 0.78rem; }
+  h2 { font-size: 0.7rem; }
+  h3 { font-size: 0.62rem; }
+  h4 { font-size: 0.58rem; }
+
+  .card {
+    padding: 14px;
+  }
+}
+

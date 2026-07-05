@@ -162,3 +162,45 @@
   background: rgba(212, 175, 55, 0.1);
   border-color: rgba(212, 175, 55, 0.2);
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 28px 20px;
+    max-width: 100%;
+  }
+
+  .auth-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-header p {
+    font-size: 0.9rem;
+  }
+
+  .auth-logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .auth-input {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .auth-button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .auth-google-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 20px 14px;
+  }
+}

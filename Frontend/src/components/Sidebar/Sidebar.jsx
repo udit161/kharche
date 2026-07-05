@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   User,
@@ -16,6 +16,12 @@ const navItems = [
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   return (
     <aside className="sidebar" id="sidebar">
@@ -89,7 +95,7 @@ export default function Sidebar() {
           <TrendingUp size={16} />
           <span>Track wisely 💸</span>
         </div>
-        <button className="logout-btn" id="logout-btn">
+        <button className="logout-btn" id="sidebar-logout-btn" onClick={handleLogout}>
           <LogOut size={18} />
           <span>Logout</span>
         </button>

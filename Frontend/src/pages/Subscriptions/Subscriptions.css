@@ -367,7 +367,7 @@
 /* ===== Responsive ===== */
 @media (max-width: 1024px) {
   .sub-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -377,11 +377,69 @@
     padding-bottom: 100px;
   }
 
+  .sub-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sub-actions {
+    justify-content: stretch;
+  }
+
+  .add-sub-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .sub-grid {
     grid-template-columns: 1fr;
   }
 
   .sub-summary-value {
     font-size: 1.2rem;
+  }
+
+  .modal-content {
+    width: 95vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-body {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .modal-header {
+    padding: 16px 20px 12px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .subscriptions-content {
+    padding: 12px;
+    padding-bottom: 100px;
+    gap: 16px;
+  }
+
+  .sub-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .sub-summary-card {
+    padding: 16px;
+  }
+
+  .sub-card {
+    padding: 16px;
+  }
+
+  .sub-delete-btn {
+    opacity: 1;
   }
 }
