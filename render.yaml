@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: kharche
+    runtime: node
+    region: singapore  # closest to India; change to oregon/frankfurt if preferred
+    plan: free
+
+    # Run from the repo root
+    rootDir: .
+
+    # 1. Install backend deps, then build the frontend
+    buildCommand: npm install --prefix Backend && npm run build
+
+    # 2. Start the Express server (serves both API + built frontend)
+    startCommand: npm start
+
+    # Environment variables — set actual values in the Render dashboard
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000          # Render free tier uses 10000; it also injects PORT automatically
+      - key: MONGO_URI
+        sync: false           # Set this in the Render dashboard (never commit secrets)
+      - key: JWT_SECRET
+        sync: false           # Set this in the Render dashboard
+      - key: ClientID
+        sync: false           # Google OAuth Client ID
+      - key: ClientSecret
+        sync: false           # Google OAuth Client Secret
