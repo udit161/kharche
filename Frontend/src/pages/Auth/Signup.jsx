@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Wallet, ArrowRight, UserPlus } from "lucide-react";
-import GoogleAuthButton from "../../components/GoogleAuthButton";
 import "./Auth.css";
 
 export default function Signup() {
@@ -109,11 +108,6 @@ export default function Signup() {
           )}
         </button>
       </form>
-
-      <div className="auth-divider">
-        <span>or</span>
-      </div>
-      <GoogleAuthButton />
 
       <div className="auth-footer">
         Already have an account?{" "}
