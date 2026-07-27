@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-// Validate required environment variables
 if (!process.env.MONGO_URI) {
   console.error("ERROR: MONGO_URI not set in .env file");
   process.exit(1);
@@ -26,7 +25,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? false // same-origin in prod — frontend is served by Express itself
+        ? false
         : process.env.CLIENT_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -35,18 +34,15 @@ app.use(
 
 app.use(express.json());
 
-// Initialize database connection
 connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-// Use routes
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/incomes", incomeRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
 
-// Serve frontend static files
 app.use(express.static(path.join(__dirname, "../Frontend/dist")));
 
 app.get("*", (req, res) => {

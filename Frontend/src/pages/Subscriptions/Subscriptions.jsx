@@ -108,7 +108,6 @@ export default function Subscriptions() {
       <TopBar title="Subscriptions" subtitle="Manage your recurring payments 💳" />
 
       <div className="subscriptions-content">
-        {/* Summary Cards */}
         <section className="sub-summary animate-in" id="sub-summary">
           <div className="sub-summary-card sub-summary-monthly">
             <div className="sub-summary-icon">
@@ -139,7 +138,6 @@ export default function Subscriptions() {
           </div>
         </section>
 
-        {/* Add Button */}
         <div className="sub-actions">
           <button
             className="add-sub-btn"
@@ -151,7 +149,6 @@ export default function Subscriptions() {
           </button>
         </div>
 
-        {/* Subscriptions Grid */}
         <section className="sub-grid" id="sub-grid">
           {subscriptions.map((sub, i) => (
             <div
@@ -194,7 +191,6 @@ export default function Subscriptions() {
         </section>
       </div>
 
-      {/* Add Modal */}
       {showAddModal && (
         <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} id="add-sub-modal">

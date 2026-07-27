@@ -163,7 +163,6 @@
   border-color: rgba(212, 175, 55, 0.2);
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 480px) {
   .auth-container {
     padding: 28px 20px;

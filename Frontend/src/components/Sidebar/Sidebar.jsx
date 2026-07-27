@@ -42,29 +42,23 @@ export default function Sidebar() {
                 <stop offset="100%" stopColor="#b06800"/>
               </linearGradient>
             </defs>
-            {/* Background */}
             <rect width="32" height="32" rx="7" fill="url(#sb-bg)"/>
-            {/* Bottom coin */}
             <ellipse cx="21" cy="24" rx="6.5" ry="2.5" fill="url(#sb-coin-a)"/>
             <rect x="14.5" y="20.5" width="13" height="3.5" fill="url(#sb-coin-a)"/>
             <ellipse cx="21" cy="20.5" rx="6.5" ry="2.5" fill="#ffc300"/>
-            {/* Middle coin */}
             <ellipse cx="21" cy="18.5" rx="6.5" ry="2.5" fill="url(#sb-coin-b)"/>
             <rect x="14.5" y="15" width="13" height="3.5" fill="url(#sb-coin-b)"/>
             <ellipse cx="21" cy="15" rx="6.5" ry="2.5" fill="#ffe44d"/>
-            {/* Top coin */}
             <ellipse cx="21" cy="13" rx="6.5" ry="2.5" fill="#ffd700"/>
             <rect x="14.5" y="9.5" width="13" height="3.5" fill="#ffd700"/>
             <ellipse cx="21" cy="9.5" rx="6.5" ry="2.5" fill="#ffe566"/>
             <ellipse cx="21" cy="9.5" rx="4.5" ry="1.5" fill="#fff8cc" opacity="0.5"/>
-            {/* Letter K */}
             <text x="5" y="23" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="19" fill="white">K</text>
           </svg>
         </div>
         <span className="logo-text">Kharche</span>
       </div>
 
-      {/* Navigation */}
       <nav className="sidebar-nav">
         <ul className="nav-list">
           {navItems.map((item) => {
@@ -89,7 +83,6 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      {/* Footer */}
       <div className="sidebar-footer">
         <div className="sidebar-stats">
           <TrendingUp size={16} />

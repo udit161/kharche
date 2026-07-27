@@ -16,11 +16,11 @@ const incomeSchema = new mongoose.Schema(
       required: true,
     },
     date: {
-      type: String, // E.g., 'Today', 'Yesterday', or ISO date string
+      type: String,
       default: "Today",
     },
     icon: {
-      type: String, // Emoji icon
+      type: String,
       default: "💰",
     }
   },

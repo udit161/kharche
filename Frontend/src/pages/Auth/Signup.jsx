@@ -29,7 +29,6 @@ export default function Signup() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        // Optionally save user data if needed
         navigate("/");
       } else {
         setError(data.message || "Signup failed. Please try again.");

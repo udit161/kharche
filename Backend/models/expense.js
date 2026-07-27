@@ -20,20 +20,20 @@ const expenseSchema = new mongoose.Schema(
       default: "Uncategorized",
     },
     date: {
-      type: String, // E.g., 'Today', 'Yesterday', or ISO date string
+      type: String,
       default: "Today",
     },
     icon: {
-      type: String, // Emoji icon
+      type: String,
       default: "💸",
     },
     priority: {
-      type: String, // 'high', 'medium', 'low', or 'none' (for recent expenses)
+      type: String,
       enum: ["high", "medium", "low", "none"],
       default: "none",
     },
     due: {
-      type: String, // Due date for priority expenses
+      type: String,
     }
   },
   { timestamps: true }

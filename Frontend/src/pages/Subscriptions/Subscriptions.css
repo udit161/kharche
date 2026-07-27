@@ -11,7 +11,6 @@
   gap: 24px;
 }
 
-/* ===== Summary Cards ===== */
 .sub-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -90,7 +89,6 @@
   color: var(--text);
 }
 
-/* ===== Add Button ===== */
 .sub-actions {
   display: flex;
   justify-content: flex-end;
@@ -114,7 +112,6 @@
   box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
 }
 
-/* ===== Subscription Grid ===== */
 .sub-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -237,7 +234,6 @@
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
-/* ===== Modal ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -322,7 +318,6 @@
   gap: 12px;
 }
 
-/* Emoji Picker */
 .emoji-picker {
   display: flex;
   flex-wrap: wrap;
@@ -364,7 +359,6 @@
   font-size: 1rem;
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 1024px) {
   .sub-summary {
     grid-template-columns: repeat(2, 1fr);

@@ -1,4 +1,3 @@
-/* ===== App Layout ===== */
 .app-layout {
   display: flex;
   min-height: 100vh;
@@ -23,11 +22,9 @@
   padding: 20px;
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 768px) {
   .app-main {
     margin-left: 0;
-    /* Clear the bottom nav (approx 56px) + any device safe area */
     padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   }
 

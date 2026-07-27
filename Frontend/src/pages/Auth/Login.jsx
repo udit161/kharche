@@ -28,8 +28,6 @@ export default function Login() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        // Optionally save user data if needed
-        // localStorage.setItem('user', JSON.stringify(data));
         navigate("/");
       } else {
         setError(

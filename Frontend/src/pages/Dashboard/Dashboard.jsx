@@ -43,28 +43,22 @@ ChartJS.register(
   ArcElement
 );
 
-// Removed initial dummy data arrays
-
 export default function Dashboard() {
   const [totalBudget, setTotalBudget] = useState(0);
   const [budgetInput, setBudgetInput] = useState('');
   const [isEditingBudget, setIsEditingBudget] = useState(false);
   const [chartView, setChartView] = useState('weekly');
 
-  // Lists state
   const [expenses, setExpenses] = useState([]);
   const [priorities, setPriorities] = useState([]);
 
-  // Modal states
   const [showAddPriorityModal, setShowAddPriorityModal] = useState(false);
   const [showAddRecentModal, setShowAddRecentModal] = useState(false);
 
-  // New item states
   const [newPriority, setNewPriority] = useState({ name: '', amount: '', priority: 'high', due: '', icon: '🔥' });
   const todayStr = new Date().toISOString().split('T')[0];
   const [newRecent, setNewRecent] = useState({ name: '', amount: '', category: 'Food', date: todayStr, icon: '💸' });
 
-  // Calculations based on dynamic state
   const totalUsed = expenses.reduce((sum, item) => sum + item.amount, 0);
   const remaining = totalBudget - totalUsed;
   const expenseLimit = totalBudget > 0 ? Math.round(totalBudget * 0.8) : 0;
@@ -77,7 +71,6 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
         if (!token) return;
         
-        // Fetch budget
         const userRes = await fetch('/api/auth/me', {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -86,7 +79,6 @@ export default function Dashboard() {
           if (userData.totalBudget) setTotalBudget(userData.totalBudget);
         }
 
-        // Fetch expenses
         const expRes = await fetch('/api/expenses', {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -205,9 +197,8 @@ export default function Dashboard() {
     }
   };
 
-  // Calculate dynamic data for charts based on expenses
-  const weeklyTotals = [0, 0, 0, 0, 0, 0, 0]; // Mon (0) to Sun (6)
-  const monthlyTotals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // Jan to Dec
+  const weeklyTotals = [0, 0, 0, 0, 0, 0, 0];
+  const monthlyTotals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const currentYear = new Date().getFullYear();
 
   expenses.forEach(item => {
@@ -225,13 +216,11 @@ export default function Dashboard() {
       monthlyTotals[expDate.getMonth()] += item.amount;
     }
     
-    // Day of week: 0 (Sun) to 6 (Sat) -> convert to 0 (Mon) to 6 (Sun)
     let dayOfWeek = expDate.getDay() - 1;
     if (dayOfWeek === -1) dayOfWeek = 6;
     weeklyTotals[dayOfWeek] += item.amount;
   });
 
-  // Weekly chart data
   const weeklyData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
@@ -256,10 +245,8 @@ export default function Dashboard() {
   const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const currentMonthIdx = new Date().getMonth();
   
-  // Create an array of budget values across months for display
   const budgetDataLine = new Array(12).fill(totalBudget);
 
-  // Monthly chart data
   const monthlyData = {
     labels: monthLabels,
     datasets: [
@@ -342,7 +329,6 @@ export default function Dashboard() {
     },
   };
 
-  // Donut chart data for expense breakdown
   const categoryTotals = expenses.reduce((acc, item) => {
     const cat = item.category || 'Other';
     acc[cat] = (acc[cat] || 0) + item.amount;
@@ -400,7 +386,6 @@ export default function Dashboard() {
       <TopBar title="Dashboard" subtitle="Track your kharche wisely ✨" />
 
       <div className="dashboard-content">
-        {/* ===== Budget Input Bar ===== */}
         <section className="budget-bar animate-in" id="budget-input-section">
           <div className="budget-bar-inner">
             <div className="budget-bar-left">
@@ -456,9 +441,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* ===== Stats Cards ===== */}
         <section className="stats-grid" id="stats-section">
-          {/* Total Expense Used */}
           <div className="stat-card stat-card-coral animate-in animate-in-delay-1" id="total-used-card">
             <div className="stat-icon coral">
               <TrendingDown size={22} />
@@ -473,7 +456,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Remaining */}
           <div className="stat-card stat-card-teal animate-in animate-in-delay-2" id="remaining-card">
             <div className="stat-icon teal">
               <PiggyBank size={22} />
@@ -488,7 +470,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Expense Limit */}
           <div className="stat-card stat-card-sunny animate-in animate-in-delay-3" id="limit-card">
             <div className="stat-icon sunny">
               <AlertTriangle size={22} />
@@ -507,9 +488,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* ===== Charts Section ===== */}
         <section className="charts-section" id="charts-section">
-          {/* Weekly / Monthly Chart */}
           <div className="chart-card card animate-in animate-in-delay-3">
             <div className="chart-header">
               <h3>Spending Overview</h3>
@@ -537,7 +516,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Donut Chart */}
           <div className="chart-card card donut-card animate-in animate-in-delay-4">
             <div className="chart-header">
               <h3>By Category</h3>
@@ -548,9 +526,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* ===== Bottom Section: Priority List + Recent ===== */}
         <section className="bottom-section" id="bottom-section">
-          {/* Priority List */}
           <div className="priority-card card animate-in animate-in-delay-4">
             <div className="section-header">
               <h3>🔥 Priority Expenses</h3>
@@ -583,7 +559,6 @@ export default function Dashboard() {
             </ul>
           </div>
 
-          {/* Recent Expenses */}
           <div className="recent-card card animate-in animate-in-delay-5">
             <div className="section-header">
               <h3>📋 Recent Expenses</h3>
@@ -610,7 +585,6 @@ export default function Dashboard() {
         </section>
       </div>
 
-      {/* Add Priority Modal */}
       {showAddPriorityModal && (
         <div className="modal-overlay" onClick={() => setShowAddPriorityModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} id="add-priority-modal">
@@ -693,7 +667,6 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Add Recent Modal */}
       {showAddRecentModal && (
         <div className="modal-overlay" onClick={() => setShowAddRecentModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} id="add-recent-modal">

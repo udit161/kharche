@@ -8,7 +8,6 @@ const generateToken = (id) => {
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  // Debug: Log what we received
   console.log("Request body received:", req.body);
   console.log("name:", name, "| email:", email, "| password:", password);
 

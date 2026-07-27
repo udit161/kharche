@@ -15,7 +15,6 @@
   border-right: 2px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Logo */
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -43,7 +42,6 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Navigation */
 .sidebar-nav {
   flex: 1;
 }
@@ -111,7 +109,6 @@
   animation: pixel-blink 1.5s step-end infinite;
 }
 
-/* Footer */
 .sidebar-footer {
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -148,7 +145,6 @@
   transform: translateY(-1px);
 }
 
-/* Responsive — Bottom Nav for Mobile */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -173,7 +169,6 @@
     display: none;
   }
 
-  /* Show footer as a logout icon button */
   .sidebar-footer {
     display: flex;
     flex-direction: row;
