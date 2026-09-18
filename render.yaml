@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: kharche
+    runtime: node
+    region: singapore # Closest region for Asia/India; adjust as needed
+    plan: free
+
+    rootDir: .
+
+    # Install root & frontend dependencies, then build frontend assets
+    buildCommand: npm install && npm run build
+
+    # Start Express server (serves API & static React build on Render)
+    startCommand: npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false # Set actual connection string in Render Dashboard
+      - key: JWT_SECRET
+        sync: false # Set actual JWT secret in Render Dashboard
+      - key: ClientID
+        sync: false # Set Google OAuth Client ID in Render Dashboard
+      - key: ClientSecret
+        sync: false # Set Google OAuth Client Secret in Render Dashboard
+      - key: CLIENT_URL
+        sync: false # Set deployed app URL in Render Dashboard
