@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Camera, Edit3, Save, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../../components/TopBar/TopBar';
+import { API_BASE_URL } from '../../config/api';
 import './Profile.css';
 
 export default function Profile() {
@@ -20,7 +21,7 @@ export default function Profile() {
           return;
         }
         
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

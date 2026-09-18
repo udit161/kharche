@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Wallet, ArrowRight, UserPlus } from "lucide-react";
+import { API_BASE_URL } from "../../config/api";
 import "./Auth.css";
 
 export default function Signup() {
@@ -17,7 +18,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

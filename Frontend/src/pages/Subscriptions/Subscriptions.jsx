@@ -10,6 +10,7 @@ import {
   X,
 } from 'lucide-react';
 import TopBar from '../../components/TopBar/TopBar';
+import { API_BASE_URL } from '../../config/api';
 import './Subscriptions.css';
 
 export default function Subscriptions() {
@@ -22,7 +23,7 @@ export default function Subscriptions() {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
-        const res = await fetch('/api/subscriptions', {
+        const res = await fetch(`${API_BASE_URL}/api/subscriptions`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {
@@ -48,7 +49,7 @@ export default function Subscriptions() {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        await fetch(`/api/subscriptions/${id}`, {
+        await fetch(`${API_BASE_URL}/api/subscriptions/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -77,7 +78,7 @@ export default function Subscriptions() {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const res = await fetch('/api/subscriptions', {
+          const res = await fetch(`${API_BASE_URL}/api/subscriptions`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
